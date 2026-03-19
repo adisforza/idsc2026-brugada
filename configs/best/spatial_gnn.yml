@@ -1,12 +1,12 @@
 data:
-  anatomic_weight: 0.75
+  anatomic_weight: 0.7
   augmentation:
     amplitude_scale: 0.1
     enabled: false
     noise_std: 0.01
     time_shift: 0.1
   batch_size: 16
-  correlation_threshold: 0.8
+  correlation_threshold: 0.5
   duration: 10
   leads: 12
   normalize: zscore_per_lead
@@ -24,25 +24,25 @@ evaluation:
   - f2
   - auc
   primary_metric: f2
-experiment_name: hgb_baseline
+experiment_name: spatial_gnn
 model:
   params:
-    class_weight: balanced
-    dropout: 0.4
+    dropout: 0.6
+    gnn_kwargs: {}
+    gnn_type: gcn
+    hidden_dim: 96
     kernel_size: 7
-    max_depth: 3
-    max_iter: 100
-    min_samples_leaf: 40
+    num_gnn_layers: 2
     resnet_channels:
     - 48
     - 96
     - 192
-  type: hgb_baseline
+  type: spatial_gnn
 num_workers: -1
 seed: 42
 tasks:
   basal_pattern:
-    enabled: true
+    enabled: false
     weight: 0.3
   brugada:
     enabled: true
@@ -56,7 +56,7 @@ training:
   early_stopping_patience: 15
   epochs: 150
   gradient_clip_norm: 1.0
-  learning_rate: 0.001
+  learning_rate: 0.0012
   log_interval: 50
   loss_function: focal
   loss_params:
@@ -71,4 +71,4 @@ training:
   use_mixing_precision: false
   verbose: true
   warmup_epochs: 10
-  weight_decay: 0.0001
+  weight_decay: 0.005
